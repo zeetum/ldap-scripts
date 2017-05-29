@@ -44,7 +44,7 @@ def get_log_locked_users(file_location):
 
 # Appends changes in state for each user to the log file
 def update_log():
-    file_location = "/home/administrator/Documents/ldap_users.csv"
+    file_location = "/mnt/logs/ldap_users.csv"
 
     ldap_locked = get_ldap_locked_users("e4008s01sv001.indigo.schools.internal","indigo\\e4088746","Holidays8","E4008S01-InternetAccess-AllStudents")
     ldap_locked += get_ldap_locked_users('e4008s01sv001.indigo.schools.internal',"indigo\\e4088746","Holidays8","E4008S01-InternetAccess-AllStaff")
@@ -60,7 +60,7 @@ def update_log():
         for user in append_unlocked:
             csv_file.write(user + "," + "unlocked" + "," + datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + "\n")
 
-    print "Current Locked: " + str(ldap_locked)
+    print("Current Locked: " + str(ldap_locked)
 
 
 
