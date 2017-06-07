@@ -60,7 +60,7 @@ def update_log():
         for user in append_unlocked:
             csv_file.write(user + "," + "unlocked" + "," + datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + "\n")
 
-    print("Current Locked: " + str(ldap_locked)
+    print("Current Locked: " + str(ldap_locked))
 
 
 
