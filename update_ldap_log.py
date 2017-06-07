@@ -46,8 +46,8 @@ def get_log_locked_users(file_location):
 def update_log():
     file_location = "/mnt/logs/ldap_users.csv"
 
-    ldap_locked = get_ldap_locked_users("e4008s01sv001.indigo.schools.internal","indigo\\username","password","E4008S01-InternetAccess-AllStudents")
-    ldap_locked += get_ldap_locked_users('e4008s01sv001.indigo.schools.internal',"indigo\\username","password","E4008S01-InternetAccess-AllStaff")
+    ldap_locked = get_ldap_locked_users("e4008s01sv001.indigo.schools.internal","indigo\\<username>","<password>","E4008S01-InternetAccess-AllStudents")
+    ldap_locked += get_ldap_locked_users('e4008s01sv001.indigo.schools.internal',"indigo\\<username>","<password>","E4008S01-InternetAccess-AllStaff")
     log_locked = get_log_locked_users(file_location)
 
     append_locked  = list(set(ldap_locked) - set(log_locked))
