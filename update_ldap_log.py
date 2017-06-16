@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import csv
 import datetime
 from ldap3 import Server, Connection
