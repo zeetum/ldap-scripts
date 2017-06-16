@@ -1,5 +1,4 @@
 import csv
-import time
 import datetime
 from ldap3 import Server, Connection
 
@@ -55,10 +54,10 @@ def update_log():
 
     with open(file_location, "a") as csv_file:
         for user in append_locked:
-            csv_file.write(user + "," + "locked" + "," + datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + "\n")
+            csv_file.write(user + "," + "locked" + "," +  datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "\n")
 
         for user in append_unlocked:
-            csv_file.write(user + "," + "unlocked" + "," + datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + "\n")
+            csv_file.write(user + "," + "unlocked" + "," +  datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "\n")
 
     print("Current Locked: " + str(ldap_locked))
 
