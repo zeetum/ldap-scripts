@@ -2,7 +2,6 @@
 
 from ldap3 import Server, Connection
 
-# Returns a list of all users locked in LDAP
 def get_computer_details(server_address, user, password, hostname):
 
     server = Server(server_address)
