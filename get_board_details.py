@@ -12,7 +12,7 @@ with open(OU_csv) as csv_read:
 
         for OU in OUs:
 
-            hostnames = get_computer_details(OU)
+            hostnames = get_ou_computers(OU)
             boardnames = get_board_details(hostnames)
 
             print(OU)
@@ -20,7 +20,7 @@ with open(OU_csv) as csv_read:
                 print("hostname: " + h + " boardnames: " + b)
 
 # Contacts LDAP to get a list of hostnames that are in the specified OU
-def get_computer_details(OU):
+def get_ou_computers(OU):
 
     server = Server(server_address)
     with Connection(server, user=user, password=password) as conn:
