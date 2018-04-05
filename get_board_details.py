@@ -40,7 +40,7 @@ def get_board_details(hostnames):
         
     boards = ()
     for hostname in hostnames:
-
+        # Possibly change the server address and put the hostname as a WHERE clause
         objWMIService = win32com.client.Dispatch("WbemScripting.SWbemLocator")
         objSWbemServices = objWMIService.ConnectServer(hostname, user + '\\' + password)
         colItems = objSWbemServices.ExecQuery("SELECT * FROM Win32_BaseBoard")
