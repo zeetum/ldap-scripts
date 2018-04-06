@@ -48,7 +48,7 @@ def get_board_details(hostnames):
 
 
         for objItem in colItems:
-            if objItem.Model != None:
-                boards += objItem.Model
+            if objItem.Product != None:
+                boards += objItem.Product
 
     return boards 
