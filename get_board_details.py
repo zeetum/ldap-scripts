@@ -3,8 +3,8 @@ from ldap3 import Server, Connection
 import win32com.client
 
 server_address = "e5070s01sv001.indigo.schools.internal"
-user = "indigo\\e4088746"
-password = "Wonderful2"
+user = "indigo\\<username>"
+password = "<password>"
 
 # Opens a CSV with the OUs you'd like computer details from
 with open(OU_csv) as csv_read:
