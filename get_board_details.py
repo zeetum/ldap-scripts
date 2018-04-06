@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# https://www.activexperts.com/admin/scripts/wmi/python/
 from ldap3 import Server, Connection
 import win32com.client
 
