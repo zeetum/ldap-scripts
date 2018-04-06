@@ -17,7 +17,7 @@ with open(OU_csv) as csv_read:
 
             print(OU)
             for h, b in zip(hostnames, boardnames):
-                print("hostname: " + h + " boardnames: " + b)
+                print("hostname: " + h + " boardname: " + b)
 
 # Contacts LDAP to get a list of hostnames that are in the specified OU
 def get_ou_computers(OU):
