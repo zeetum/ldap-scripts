@@ -1,16 +1,14 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
-# Getting wmic working: https://www.si458.co.uk/
-# wmic -U INDIGO/<user>%<pass> //MS4CCC6AE71035 "SELECT Product FROM Win32_BaseBoard"
-
+# https://pypi.python.org/pypi/wmicq/1.0.0
 # https://www.activexperts.com/admin/scripts/wmi/python/
 # https://msdn.microsoft.com/en-us/library/aa394589(v=vs.85).aspx?cs-save-lang=1&cs-lang=vb#code-snippet-1
 from ldap3 import Server, Connection
-#import win32com.client
+import wmi_client_wrapper as wmi
 
 server_address = "e5070s01sv001.indigo.schools.internal"
-user = "indigo\\e4088746"
-password = "Wonderful4"
+user = "indigo\\<username>"
+password = "<pass>"
 OU_csv = "./OUs.csv"
 
 
@@ -32,18 +30,18 @@ def get_ou_computers(OU):
 
 # Contacts WIM to get a list of boardnames associated with the supplied hostnames
 def get_board_details(hostnames):
-        
+
+
     boards = ()
     for hostname in hostnames:
-        # Possibly change the server address and put the hostname as a WHERE clause
-        objWMIService = win32com.client.Dispatch("WbemScripting.SWbemLocator")
-        objSWbemServices = objWMIService.ConnectServer(hostname, "root\cimv2")
-        colItems = objSWbemServices.ExecQuery("SELECT * FROM Win32_BaseBoard")
+        wmic = wmi.WmiClientWrapper(
+            username="indigo/<username>",
+            password=<pass>,
+            host=hostname,
+        )
 
-
-        for objItem in colItems:
-            if objItem.Product != None:
-                boards += objItem.Product
+        output = wmic.query("\"SELECT Product FROM Win32_BaseBoard\"")
+        print(output)
 
     return boards 
 
@@ -51,16 +49,16 @@ def get_board_details(hostnames):
 # Opens a CSV with the OUs you'd like computer details from
 with open(OU_csv) as csv_read:
     #OUs = list(csv.reader(csv_read))
-    OUs = ("OU=Room 10,OU=Block G,",)
+    OUs = ("OU=Room 13,OU=Block H,",)
 
     for OU in OUs:
-        print(OU)
+
         hostnames = get_ou_computers(OU)
-        # Get win32com working
         boardnames = get_board_details(hostnames)
         boardnames = hostnames
 
         print(OU)
         for h, b in zip(hostnames, boardnames):
             print("hostname: " + h + " boardname: " + b)
+
 
