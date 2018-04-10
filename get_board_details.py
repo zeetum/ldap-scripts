@@ -39,7 +39,7 @@ def get_board_details(hostnames):
     for hostname in hostnames:
         wmic = wmi.WmiClientWrapper(
             username="indigo/<username>",
-            password=<pass>,
+            password="<pass>",
             host=hostname,
         )
 
