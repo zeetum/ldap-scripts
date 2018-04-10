@@ -14,7 +14,7 @@ with open(OU_csv) as csv_read:
 
         for OU in OUs:
 
-            hostnames = get_ou_computers(OU)
+            hostnames = get_ou_computers("OU=Room 10,OU=Block G,")
             boardnames = get_board_details(hostnames)
 
             print(OU)
@@ -27,13 +27,13 @@ def get_ou_computers(OU):
     server = Server(server_address)
     with Connection(server, user=user, password=password) as conn:
 
-        BaseDN = 'DC=' + OU + ',DC=indigo,DC=schools,DC=internal'
+        BaseDN = OU + "OU=Desktops,OU=School Managed,OU=Computers,OU=E5070S01,OU=Schools,DC=indigo,DC=schools,DC=internal"
         Filter = "(objectCategory=computer)"
-
         conn.search(BaseDN,Filter)
+        
         hostnames = ()
         for entry in conn.entries:
-            hostnames += entry
+            hostnames += str(entry).split(',')[0][7:]
 
     return hostnames
 
