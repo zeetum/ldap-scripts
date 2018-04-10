@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Getting wmic working: https://www.si458.co.uk/
+# wmic -U INDIGO/<user>%<pass>//MS4CCC6AE71035 "SELECT Product FROM Win32_BaseBoard"
+
 # https://pypi.python.org/pypi/wmicq/1.0.0
 # https://www.activexperts.com/admin/scripts/wmi/python/
 # https://msdn.microsoft.com/en-us/library/aa394589(v=vs.85).aspx?cs-save-lang=1&cs-lang=vb#code-snippet-1
