@@ -33,7 +33,8 @@ def get_ou_computers(OU):
 
 # Contacts WIM to get a list of boardnames associated with the supplied hostnames
 def get_board_details(hostnames):
-
+# change structure to call a command instead of using a library
+# https://docs.python.org/3/library/subprocess.html#subprocess.check_output
 
     boards = ()
     for hostname in hostnames:
