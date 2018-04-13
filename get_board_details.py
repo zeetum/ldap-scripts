@@ -35,6 +35,8 @@ def get_ou_computers(OU):
 def get_board_details(hostnames):
 # change structure to call a command instead of using a library
 # https://docs.python.org/3/library/subprocess.html#subprocess.check_output
+# result = 
+# results = tuple(map(lambda x: x.decode(), result.splitlines())) 
 
     boards = ()
     for hostname in hostnames:
