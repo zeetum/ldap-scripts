@@ -47,8 +47,8 @@ def get_board_details(hostnames):
     
     boards = ()
     for hostname in hostnames:
-        output = os.popen("/bin/wmic --user=" + domain + "/" + user +"%" + password + " //" + hostname + " \"SELECT Product FROM Win32_BaseBoard\"").read()
-        boards += (output.split("|")[1][4:],)
+        output = os.popen("/bin/wmic --user=" + domain + "/" + user +"%" + password + " //" + hostname + " \"SELECT Version FROM Win32_ComputerSystemProduct\"").read()
+        boards += (output.split("|")[2][8:],)
 
     return boards 
 
@@ -66,6 +66,4 @@ with open(OU_csv) as csv_read:
 
         print(OU)
         for h, b in zip(hostnames, boardnames):
-            print("hostname: " + h + " boardname: " + b)
-
-
+            print("hostname: " + h + " model: " + b)
