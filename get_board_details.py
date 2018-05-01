@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Getting wmic working: https://www.si458.co.uk/
+# Getting wmic working: https://www.si458.co.uk/?p=134
 # wmic -U INDIGO/<user>%<pass>//MS4CCC6AE71035 "SELECT Product FROM Win32_BaseBoard"
 
 # https://pypi.python.org/pypi/wmicq/1.0.0
@@ -8,10 +8,12 @@
 # https://msdn.microsoft.com/en-us/library/aa394589(v=vs.85).aspx?cs-save-lang=1&cs-lang=vb#code-snippet-1
 from ldap3 import Server, Connection
 import wmi_client_wrapper as wmi
+import os
 
 server_address = "e5070s01sv001.indigo.schools.internal"
-user = "indigo\\<username>"
-password = "<pass>"
+domain = "indigo"
+user = "e4088746"
+password = "Wonderful4"
 OU_csv = "./OUs.csv"
 
 
@@ -19,10 +21,10 @@ OU_csv = "./OUs.csv"
 def get_ou_computers(OU):
 
     server = Server(server_address)
-    with Connection(server, user=user, password=password) as conn:
+    with Connection(server, user=domain + "\\" + user, password=password) as conn:
 
         BaseDN = OU + "OU=Desktops,OU=School Managed,OU=Computers,OU=E5070S01,OU=Schools,DC=indigo,DC=schools,DC=internal"
-        Filter = "(objectCategory=computer)"
+        Filter = "(&(objectCategory=computer)(name=*)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))"
         conn.search(BaseDN,Filter)
 
         hostnames = ()
@@ -31,23 +33,22 @@ def get_ou_computers(OU):
 
     return hostnames
 
+# Ping computers to see if they're online
+def get_online_computers(hostnames):
+    online = tuple()
+    for hostname in hostnames:
+        if (os.system("ping -c 1 " + hostname + " > /dev/null 2>&1") == 0):
+            online += (hostname,)
+    
+    return online
+
 # Contacts WIM to get a list of boardnames associated with the supplied hostnames
 def get_board_details(hostnames):
-# change structure to call a command instead of using a library
-# https://docs.python.org/3/library/subprocess.html#subprocess.check_output
-# result = 
-# results = tuple(map(lambda x: x.decode(), result.splitlines())) 
-
+    
     boards = ()
     for hostname in hostnames:
-        wmic = wmi.WmiClientWrapper(
-            username="indigo/<username>",
-            password="<pass>",
-            host=hostname,
-        )
-
-        output = wmic.query("\"SELECT Product FROM Win32_BaseBoard\"")
-        print(output)
+        output = os.popen("/bin/wmic --user=" + domain + "/" + user +"%" + password + " //" + hostname + " \"SELECT Product FROM Win32_BaseBoard\"").read()
+        boards += (output.split("|")[1][4:],)
 
     return boards 
 
@@ -60,8 +61,8 @@ with open(OU_csv) as csv_read:
     for OU in OUs:
 
         hostnames = get_ou_computers(OU)
+        hostnames = get_online_computers(hostnames)
         boardnames = get_board_details(hostnames)
-        boardnames = hostnames
 
         print(OU)
         for h, b in zip(hostnames, boardnames):
