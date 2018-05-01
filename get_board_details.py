@@ -24,7 +24,7 @@ def get_ou_computers(OU):
     with Connection(server, user=domain + "\\" + user, password=password) as conn:
 
         BaseDN = OU + "OU=Desktops,OU=School Managed,OU=Computers,OU=E5070S01,OU=Schools,DC=indigo,DC=schools,DC=internal"
-        Filter = "(&(objectCategory=computer)(name=*)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))"
+        Filter = "(objectCategory=computer)"
         conn.search(BaseDN,Filter)
 
         hostnames = ()
