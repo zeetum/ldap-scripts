@@ -12,8 +12,8 @@ import os
 
 server_address = "e5070s01sv001.indigo.schools.internal"
 domain = "indigo"
-user = "e4088746"
-password = "Wonderful4"
+user = "<username>"
+password = "<password>"
 OU_csv = "./OUs.csv"
 
 
