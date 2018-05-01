@@ -67,3 +67,4 @@ with open(OU_csv) as csv_read:
         print(OU)
         for h, b in zip(hostnames, boardnames):
             print("hostname: " + h + " model: " + b)
+
