@@ -43,7 +43,7 @@ def get_online_computers(hostnames):
     return online
 
 # Contacts WIM to get a list of boardnames associated with the supplied hostnames
-def get_board_details(hostnames):
+def get_computer_details(hostnames):
     
     boards = ()
     for hostname in hostnames:
@@ -61,7 +61,7 @@ with open(OU_csv) as csv_read:
     for OU in OUs:
 
         hostnames = get_ou_computers(OU)
-        hostnames = get_online_computers(hostnames)
+        hostnames = get_computer_details(hostnames)
         boardnames = get_board_details(hostnames)
 
         print(OU)
