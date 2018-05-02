@@ -46,12 +46,12 @@ def get_online_computers(hostnames):
 # Contacts WIM to get a list of boardnames associated with the supplied hostnames
 def get_computer_details(hostnames):
     
-    boards = ()
+    details = ()
     for hostname in hostnames:
         output = os.popen("/bin/wmic --user=" + domain + "/" + user +"%" + password + " //" + hostname + " \"SELECT Version FROM Win32_ComputerSystemProduct\"").read()
-        boards += (output.split("|")[2][8:],)
+        details += (output.split("|")[2][8:],)
 
-    return boards 
+    return details 
 
 
 # Opens a CSV with the OUs you'd like computer details from
@@ -62,10 +62,10 @@ with open(OU_csv) as csv_read:
     for OU in OUs:
 
         hostnames = get_ou_computers(OU)
-        hostnames = get_computer_details(hostnames)
-        boardnames = get_board_details(hostnames)
+        hostnames = get_online_computers(hostnames)
+        details = get_computer_details(hostnames)
 
         print(OU)
-        for h, b in zip(hostnames, boardnames):
+        for h, b in zip(hostnames, details):
             print("hostname: " + h + " model: " + b)
 
