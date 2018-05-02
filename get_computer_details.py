@@ -2,6 +2,7 @@
 
 # Getting wmic working: https://www.si458.co.uk/?p=134
 # wmic -U INDIGO/<user>%<pass> //MS4CCC6AE71035 "SELECT Version FROM Win32_ComputerSystemProduct"
+# wmic -U INDIGO/<user>%<pass> //MS4CCC6AE71035 "COMPUTERSYSTEM GET username"
 
 # https://pypi.python.org/pypi/wmicq/1.0.0
 # https://www.activexperts.com/admin/scripts/wmi/python/
