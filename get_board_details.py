@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
 # Getting wmic working: https://www.si458.co.uk/?p=134
-# wmic -U INDIGO/<user>%<pass>//MS4CCC6AE71035 "SELECT Product FROM Win32_BaseBoard"
+# wmic -U INDIGO/<user>%<pass> //MS4CCC6AE71035 "SELECT Version FROM Win32_ComputerSystemProduct"
 
 # https://pypi.python.org/pypi/wmicq/1.0.0
 # https://www.activexperts.com/admin/scripts/wmi/python/
 # https://msdn.microsoft.com/en-us/library/aa394589(v=vs.85).aspx?cs-save-lang=1&cs-lang=vb#code-snippet-1
 from ldap3 import Server, Connection
-import wmi_client_wrapper as wmi
 import os
 
 server_address = "e5070s01sv001.indigo.schools.internal"
