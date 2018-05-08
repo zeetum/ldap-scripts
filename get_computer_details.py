@@ -64,6 +64,4 @@ def main():
         for h, b in zip(hostnames, boardnames):
             print("hostname: " + h + " model: " + b)
 
-
-
 main()
