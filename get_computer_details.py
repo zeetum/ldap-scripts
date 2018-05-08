@@ -10,8 +10,8 @@ import os
 
 server_address = "e5070s01sv001.indigo.schools.internal"
 domain = "indigo"
-user = "e4088746"
-password = "Wonderful4"
+user = "<e-number>"
+password = "<password>"
 
 # Contacts LDAP to get a list of hostnames that are in the specified OU
 def get_ou_computers(OU):
