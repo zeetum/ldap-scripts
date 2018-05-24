@@ -36,7 +36,7 @@ def get_ou_computers(OU):
 # Ping computers to see if they're online
 def get_online_computers(hostnames):
     
-    online = tuple()
+    online = ()
     for hostname in hostnames:
         if (os.system("ping -c 1 " + hostname + " > /dev/null 2>&1") == 0):
             online += (hostname,)
