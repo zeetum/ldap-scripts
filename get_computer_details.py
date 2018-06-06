@@ -53,6 +53,20 @@ def get_board_details(hostnames):
 
     return boards 
 
+# Pattern match boardnames to assign a colour to each active computer
+def get_colours(boardnames):
+    
+    colours = ()
+    for boardname in boardnames:
+        
+        if "" in boardname:
+            colours += ("pink",)
+        elif "" in boardname:
+            colours += ("white",)
+        
+    return colours
+
+
 # Usage:
 #     get_board_details "OU=Room 13,OU=Block H"
 def main():
@@ -62,6 +76,7 @@ def main():
         hostnames = get_ou_computers(sys.argv[OU])
         hostnames = get_online_computers(hostnames)
         boardnames = get_board_details(hostnames)
+        colours = get_colours(boardnames)
 
         print(sys.argv[OU])
         print(str(len(hostnames)) + " computers")
