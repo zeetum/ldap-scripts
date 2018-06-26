@@ -5,17 +5,21 @@
 # wmic -U INDIGO/<user>%<pass> //MS4CCC6AE71035 "COMPUTERSYSTEM GET username"
 # wmic -U INDIGO/<user>%<pass> //MS4CCC6AE71035 "SELECT UserName FROM Win32_ComputerSystem"
 
+
 # https://pypi.python.org/pypi/wmicq/1.0.0
 # https://www.activexperts.com/admin/scripts/wmi/python/
 # https://msdn.microsoft.com/en-us/library/aa394589(v=vs.85).aspx?cs-save-lang=1&cs-lang=vb#code-snippet-1
 from ldap3 import Server, Connection
+import wmi_client_wrapper as wmi
 import sys
+import csv
 import os
 
 server_address = "e5070s01sv001.indigo.schools.internal"
 domain = "indigo"
-user = "<e-number>"
+user = "<username>"
 password = "<password>"
+library_csv = ""
 
 # Contacts LDAP to get a list of hostnames that are in the specified OU
 def get_ou_computers(OU):
@@ -35,7 +39,6 @@ def get_ou_computers(OU):
 
 # Ping computers to see if they're online
 def get_online_computers(hostnames):
-    
     online = ()
     for hostname in hostnames:
         if (os.system("ping -c 1 " + hostname + " > /dev/null 2>&1") == 0):
@@ -44,43 +47,56 @@ def get_online_computers(hostnames):
     return online
 
 # Contacts WIM to get a list of boardnames associated with the supplied hostnames
-def get_board_details(hostnames):
+def get_barcodes(hostnames):
     
-    boards = ()
+    barcodes = ()
     for hostname in hostnames:
         output = os.popen("/bin/wmic --user=" + domain + "/" + user +"%" + password + " //" + hostname + " \"SELECT Version FROM Win32_ComputerSystemProduct\"").read()
-        boards += (output.split("|")[2][8:],)
+        barcodes += (output.split("|")[2][8:],)
 
-    return boards 
+    return barcodes 
 
-# Pattern match boardnames to assign a colour to each active computer
-def get_colours(boardnames):
+# Return (barcode, serial, year)
+def get_records(barcode, library_csv)
     
-    colours = ()
-    for boardname in boardnames:
-        
-        if "" in boardname:
-            colours += ("pink",)
-        elif "" in boardname:
-            colours += ("white",)
-        
-    return colours
+    records= ()
+    with open(library_csv) as csv_file:
+        lines = tuple(csv.reader(csv_file))
 
+        for barcode in barcodes:
+            records += (filter(lambda record: barcode in record[0], lines),)
 
-# Usage:
-#     get_board_details "OU=Room 13,OU=Block H"
+    return records 
+
 def main():
 
-    for OU in range(1,len(sys.argv)):
+    OUs = ("OU=Room 10,OU=Block G",)
+#    OUs = ("OU=Room 1,OU=Block E",
+#           "OU=Room 2,OU=Block E",
+#           "OU=Room 3,OU=Block E",
+#           "OU=Room 4,OU=Block E",
+#           "OU=Room 5,OU=Block F",
+#           "OU=Room 6,OU=Block F",
+#           "OU=Room 7,OU=Block F",
+#           "OU=Room 8,OU=Block F",
+#           "OU=Room 9,OU=Block G",
+#           "OU=Room 10,OU=Block G",
+#           "OU=Room 11,OU=Block G",
+#           "OU=Room 12,OU=Block G",
+#           "OU=Room 13,OU=Block H")
 
-        hostnames = get_ou_computers(sys.argv[OU])
+    for OU in OUs:
+
+        hostnames = get_ou_computers(OU)
         hostnames = get_online_computers(hostnames)
-        boardnames = get_board_details(hostnames)
-        colours = get_colours(boardnames)
+        barcodes = get_barcodes(hostnames)
+        records = get_records(barcodes, library_csv)
 
-        print(sys.argv[OU])
+        print(OU)
         print(str(len(hostnames)) + " computers")
-        for h, b in zip(hostnames, boardnames):
-            print("hostname: " + h + " model: " + b)
+        for b, s, y in records:
+            print("barcode: " + b + " serial: " + s + " year: " + y)
+
+
 
 main()
