@@ -64,7 +64,7 @@ def get_records(barcode, library_csv)
         lines = tuple(csv.reader(csv_file))
 
         for barcode in barcodes:
-            records += (filter(lambda record: barcode in record[0], lines),)
+            records += filter(lambda record: barcode in record[0], lines)
 
     return records 
 
