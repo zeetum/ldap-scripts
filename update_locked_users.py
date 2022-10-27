@@ -5,14 +5,15 @@ import datetime
 from ldap3 import Server, Connection
 
 # Returns a list of all users locked in LDAP
-def get_ldap_locked_users(server_address, user, password, group):
+def get_ldap_locked_users(site_code, user, password, group):
     ldap_users = []
     
-    server = Server(server_address)
+    print("e" + site_code + "s01sv001.indigo.schools.internal")
+    server = Server("e" + site_code + "s01sv001.indigo.schools.internal")
     with Connection(server, user=user, password=password) as conn:
 
         BaseDN = 'OU=School Users,DC=indigo,DC=schools,DC=internal'
-        Filter = '(&(SAMAccountType=805306368)(memberOf=CN=' + group + ',OU=School Managed,OU=Groups,OU=E4008S01,OU=Schools,DC=indigo,DC=schools,DC=internal)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))'
+        Filter = '(&(SAMAccountType=805306368)(memberOf=CN=' + group + ',OU=School Managed,OU=Groups,OU=E' + site_code + 'S01,OU=Schools,DC=indigo,DC=schools,DC=internal)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))'
    
         # https://msdn.microsoft.com/en-us/library/ms677840(v=vs.85).aspx
         conn.search(BaseDN,Filter,attributes=['cn','msDS-User-Account-Control-Computed'])
@@ -23,6 +24,7 @@ def get_ldap_locked_users(server_address, user, password, group):
                 
                 ldap_users.append(str(entry['cn']))
     
+    print(ldap_users)
     return ldap_users
 
 
@@ -45,10 +47,13 @@ def get_log_locked_users(file_location):
 
 # Appends changes in state for each user to the log file
 def update_log():
-    file_location = "/mnt/logs/ldap_users.csv"
+    file_location = "/home/tum/Documents/ldap/ldap_users.csv"
+    site_code = "5070"
+    username = "username"
+    password = "password"
 
-    ldap_locked = get_ldap_locked_users("e4008s01sv001.indigo.schools.internal","indigo\\<username>","<password>","E4008S01-InternetAccess-AllStudents")
-    ldap_locked += get_ldap_locked_users('e4008s01sv001.indigo.schools.internal',"indigo\\<username>","<password>","E4008S01-InternetAccess-AllStaff")
+    ldap_locked = get_ldap_locked_users(site_code, "indigo\\" + username,password, "E" + site_code + "S01-InternetAccess-AllStudents")
+    #ldap_locked += get_ldap_locked_users(site_code," indigo\\" + username, password, "E" + site_code + "S01-InternetAccess-AllStaff")
     log_locked = get_log_locked_users(file_location)
 
     append_locked  = list(set(ldap_locked) - set(log_locked))
